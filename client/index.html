@@ -1,0 +1,65 @@
+<html>
+    <head>
+        <title>Simple Chat</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <script type="text/javascript">
+/**/
+var SimpleChat = {};
+window.addEventListener("load", function() {
+    initializeName();
+});
+
+function crush(s) {
+    // Turn string into number
+    var n = 0;
+    for (var i = 0; i < s.length; i++) {
+        n = (n + s.charCodeAt(s)) % 10000;
+    }
+    return n.toString();
+}
+
+function initializeName() {
+    // Check cookie for name
+    if (!localStorage) {
+        var name = prompt("Enter a name");
+        if (name) {
+            SimpleChat.name = name;
+        }
+        else {
+            SimpleChat.name = "user" + crush(navigator.userAgent);
+        }
+    }
+}
+
+function send(url, data, successCallback, errorCallback) {
+    var req = new XMLHttpRequest();
+    req.open("POST", url, true);
+    req.onreadystatechange = function(status) {
+        if (req.readystate == 4 && req.status == 200) {
+            if (successCallback instanceof Function) {
+                successCallback();
+            }
+        }
+        // TODO Handle errors
+    };
+    req.send(data);
+}
+
+/**/
+        </script>
+        <style type="text/css">
+/**/
+body {
+    font-family: "Lucida Console", monospace;
+}
+/**/
+        </style>
+    </head>
+    <body>
+        <div id="info_connection"></div>
+        <div id="info_name"></div>
+        <div id="info_general"></div>
+        <div id="chat_messages"></div>
+        <div id="chat_input"></div>
+    </body>
+</html>
